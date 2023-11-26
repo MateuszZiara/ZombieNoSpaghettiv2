@@ -24,44 +24,39 @@ void Player::move(sf::RenderWindow &window, Animation &Animation, bool hold, std
 
                 if(key == 0)
                     key = lastKey;
-                if (key == 1 ) {
-                    increment += 1;
+                if (key == 1 ) { //w
                     playerModel.setPosition(playerModel.getPosition().x,
-                                            isRectangleTouchingField(playerModel, pointsinvec, window).y + increment);
+                                            playerModel.getPosition().y + playerModel.getGlobalBounds().height-75);
                 }
-                if (key == 2) {
-                    increment ++;
+                if (key == 2) { //s
                     playerModel.setPosition(playerModel.getPosition().x,
-                                            isRectangleTouchingField(playerModel, pointsinvec, window).y - increment);
+                                            playerModel.getPosition().y - playerModel.getGlobalBounds().height + 75);
                 }
-                if (key == 3) {
-                    increment ++;
-                    playerModel.setPosition(isRectangleTouchingField(playerModel, pointsinvec, window).x - increment,
+                if (key == 3) { // d
+                    playerModel.setPosition(playerModel.getPosition().x - playerModel.getGlobalBounds().width+45,
                                             playerModel.getPosition().y);
                 }
-                if (key == 4) {
-                    increment ++;
-                    playerModel.setPosition(isRectangleTouchingField(playerModel,pointsinvec,window).x + increment, playerModel.getPosition().y);
+                if (key == 4) { // a
+                    playerModel.setPosition(playerModel.getPosition().x + playerModel.getGlobalBounds().width-45, playerModel.getPosition().y);
                 }
-                if (key == 5)
+                if (key == 5) //wd
+                {
+
+                    playerModel.setPosition(playerModel.getPosition().x - playerModel.getGlobalBounds().width+45, playerModel.getPosition().y + playerModel.getGlobalBounds().height-75);
+                }
+                if (key == 6) //wa
                 {
                     increment ++;
-                    playerModel.setPosition(isRectangleTouchingField(playerModel,pointsinvec,window).x - increment, playerModel.getPosition().y + increment);
+                    playerModel.setPosition(playerModel.getPosition().x + playerModel.getGlobalBounds().width-45, playerModel.getPosition().y + playerModel.getGlobalBounds().height-75);
                 }
-                if (key == 6)
+                if (key == 7) //sa
+                {
+                    playerModel.setPosition(playerModel.getPosition().x + playerModel.getGlobalBounds().width-45, playerModel.getPosition().y - playerModel.getGlobalBounds().height + 75);
+                }
+                if (key == 8) //sd
                 {
                     increment ++;
-                    playerModel.setPosition(isRectangleTouchingField(playerModel,pointsinvec,window).x + increment, playerModel.getPosition().y + increment);
-                }
-                if (key == 7)
-                {
-                    increment ++;
-                    playerModel.setPosition(isRectangleTouchingField(playerModel,pointsinvec,window).x + increment, playerModel.getPosition().y - increment);
-                }
-                if (key == 8)
-                {
-                    increment ++;
-                    playerModel.setPosition(isRectangleTouchingField(playerModel,pointsinvec,window).x - increment, playerModel.getPosition().y - increment);
+                    playerModel.setPosition(playerModel.getPosition().x - playerModel.getGlobalBounds().width+45, playerModel.getPosition().y - playerModel.getGlobalBounds().height + 75);
                 }
             }
         }
@@ -96,19 +91,19 @@ void Player::move(sf::RenderWindow &window, Animation &Animation, bool hold, std
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) && sf::Keyboard::isKeyPressed(sf::Keyboard::D) )
     {
-        key = lastKey;
+        key = 5;
     }
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) && sf::Keyboard::isKeyPressed(sf::Keyboard::A) )
     {
-        key = lastKey;
+        key = 6;
     }
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S) && sf::Keyboard::isKeyPressed(sf::Keyboard::A) )
     {
-        key = lastKey;
+        key = 7;
     }
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S) && sf::Keyboard::isKeyPressed(sf::Keyboard::D) )
     {
-        key = lastKey;
+        key = 8;
     }
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
         key = 1;
