@@ -32,6 +32,7 @@ public:
     float halfWindowHeight;
     int lastkey = 0;
     int zombieSpawn = 0;
+    int zombieCount = 0;
     vector<Arrow> arrowVector;
     vector<Zombie> zombieVector;
     std::vector<sf::Vector2f> points = {
@@ -84,6 +85,7 @@ public:
     Texture archerTexture;
     Texture berserkTexture;
     Texture arrowTexture;
+    Texture zombieTexture;
     //Buttons
     std::vector<Button> buttonVector = init_buttons(window, bitMap, player, archerTexture, berserkTexture);
     std::vector<Button> buttonVectorHovered = init_buttonsHovered(window, bitMap, BerserkMenu, LucznikMenu);
@@ -109,6 +111,7 @@ public:
         archerTexture.loadFromFile("../Textures/lucznik.png");
         berserkTexture.loadFromFile("../Textures/berserker.png");
         arrowTexture.loadFromFile("../Textures/lucznik.png");
+        zombieTexture.loadFromFile("../Textures/zombie.png");
         draw_buttons(buttonVector,window);
 
     }
@@ -138,6 +141,10 @@ public:
             };
             window.draw(line, 2, sf::Lines);
         }
+        for(int i = 0; i < zombieVector.size(); ++i)
+            zombieVector[i].spawn(window);
+
+
     }
     void view_update()
     {
@@ -184,11 +191,14 @@ public:
         vectors_update();
         window.draw(player.getPlayerModel());
         isRectangleTouchingField(player.playerModel,points2,window);
-        if(zombieSpawn >= 15)
+        if(zombieSpawn >= 200)
         {
-            Zombie zombie();
+            Zombie zombie(zombieTexture);
             add(zombieVector,zombie);
+            zombieSpawn = 0;
+            zombieCount++;
         }
+
         window.display();
         window.clear();
     }
