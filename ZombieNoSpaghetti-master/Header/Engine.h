@@ -7,6 +7,7 @@
 #include "Player.h"
 #include "Arrow.h"
 #include "Zombie.h"
+//#include "SoundEffects.h"
 #ifndef ZOMBIENOSPAGHETTI_ENGINE_H
 #define ZOMBIENOSPAGHETTI_ENGINE_H
 class Engine
@@ -75,6 +76,7 @@ public:
             sf::Vector2f(1031, 205),
             sf::Vector2f(1037, 0)
     };
+
     std::vector<std::vector<sf::Vector2f>> allPoints;
     Animation LucznikMenu;
     Animation BerserkMenu;
@@ -84,6 +86,8 @@ public:
     Texture archerTexture;
     Texture berserkTexture;
     Texture arrowTexture;
+    //Implementacja dzwieku
+    //SoundEffects soundEffects;
     //Buttons
     std::vector<Button> buttonVector = init_buttons(window, bitMap, player, archerTexture, berserkTexture);
     std::vector<Button> buttonVectorHovered = init_buttonsHovered(window, bitMap, BerserkMenu, LucznikMenu);
@@ -112,6 +116,8 @@ public:
         draw_buttons(buttonVector,window);
 
     }
+
+
     void event_update()
     {
         while (window.pollEvent(event))
@@ -184,11 +190,13 @@ public:
         vectors_update();
         window.draw(player.getPlayerModel());
         isRectangleTouchingField(player.playerModel,points2,window);
+        sf::RectangleShape shape;
         if(zombieSpawn >= 15)
         {
-            Zombie zombie();
+            Zombie zombie(archerTexture,shape);
             add(zombieVector,zombie);
         }
+        isRectangleTouchingField(player.playerModel,points4,window);
         window.display();
         window.clear();
     }

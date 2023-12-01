@@ -18,7 +18,11 @@ public:
         width = 50.f;
         hpBarMaxWidth = width;
         height = 10.f;
+        previousPosition = playerModel.getPosition();
+
     }
+    sf::Vector2f previousPosition;
+    sf::Vector2f velocity;
     sf::RectangleShape hpBarBack;
     sf::RectangleShape hpBarInside;
     Texture texture;
@@ -36,6 +40,13 @@ private:
     float hpBarMaxWidth;
     float height;
 
+    void UpdatePos() {
+        previousPosition = playerModel.getPosition();
+        playerModel.move(velocity);
+    }
 
+    void UndoMove() {
+        playerModel.setPosition(previousPosition);
+    }
 };
 #endif //ZOMBIENOSPAGHETTI_PLAYER_H

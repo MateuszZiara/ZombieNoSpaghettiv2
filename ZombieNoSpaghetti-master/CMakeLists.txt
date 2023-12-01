@@ -1,7 +1,14 @@
 cmake_minimum_required(VERSION 3.26)
 project(ZombieNoSpaghetti)
 
+include(FetchContent)
+
+set(BUILD_SHARED_LIBS  OFF)
 set(CMAKE_CXX_STANDARD 17)
+FETCHCONTENT_DECLARE(SFML GIT_REPOSITORY https://github.com/SFML/SFML.git GIT_TAG 2.6.1)
+FETCHCONTENT_MAKEAVAILABLE(SFML)
+
+
 
 add_executable(ZombieNoSpaghetti main.cpp
         Header/WindowConfig.h
@@ -24,10 +31,4 @@ add_executable(ZombieNoSpaghetti main.cpp
         Header/Zombie.h
 )
 
-set(SFML_STATIC_LIBRARIES TRUE)
-set(SFML_DIR C:/SFML/lib/cmake/SFML)
-
-find_package(SFML COMPONENTS system window graphics audio network REQUIRED)
-
-include_directories(C:/Users/coons/CLionProjects/ZombieNoSpaghetti/include/SFML)
-target_link_libraries(ZombieNoSpaghetti sfml-system sfml-window sfml-graphics sfml-audio)
+target_link_libraries(ZombieNoSpaghetti sfml-graphics)

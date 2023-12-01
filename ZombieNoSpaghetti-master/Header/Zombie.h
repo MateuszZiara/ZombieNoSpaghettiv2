@@ -18,7 +18,7 @@ public:
     }
 
 };
-void add(vector<Zombie> zombieVec, Zombie zombie)
+void add(vector<Zombie>& zombieVec, Zombie& zombie)
 {
     int number = rand()%4+1;
     if(number == 1)
