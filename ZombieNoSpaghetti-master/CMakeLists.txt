@@ -21,6 +21,7 @@ add_executable(ZombieNoSpaghetti main.cpp
         Source/Arrow.cpp
         Header/Arrow.h
         Header/Engine.h
+        Header/Zombie.h
 )
 
 set(SFML_STATIC_LIBRARIES TRUE)

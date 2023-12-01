@@ -6,6 +6,7 @@
 #include "CustomButtons.h"
 #include "Player.h"
 #include "Arrow.h"
+#include "Zombie.h"
 #ifndef ZOMBIENOSPAGHETTI_ENGINE_H
 #define ZOMBIENOSPAGHETTI_ENGINE_H
 class Engine
@@ -30,7 +31,9 @@ public:
     float halfWindowWidth;
     float halfWindowHeight;
     int lastkey = 0;
+    int zombieSpawn = 0;
     vector<Arrow> arrowVector;
+    vector<Zombie> zombieVector;
     std::vector<sf::Vector2f> points = {
             sf::Vector2f(0, 511),
             sf::Vector2f(354, 452),
@@ -95,7 +98,7 @@ public:
         halfWindowWidth = window.getSize().x / 4;
         halfWindowHeight = window.getSize().y / 4;
         allPoints.push_back(points);
-        //allPoints.push_back(points2);
+        allPoints.push_back(points2);
         allPoints.push_back(points3);
         allPoints.push_back(points4);
     }
@@ -172,6 +175,7 @@ public:
     }
     void run_engine()
     {
+        zombieSpawn++;
         event_update();
         view_update();
         keyboard_update();
@@ -180,6 +184,11 @@ public:
         vectors_update();
         window.draw(player.getPlayerModel());
         isRectangleTouchingField(player.playerModel,points2,window);
+        if(zombieSpawn >= 15)
+        {
+            Zombie zombie();
+            add(zombieVector,zombie);
+        }
         window.display();
         window.clear();
     }
