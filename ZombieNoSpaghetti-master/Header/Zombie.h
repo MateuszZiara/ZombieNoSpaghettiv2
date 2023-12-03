@@ -3,11 +3,20 @@
 //
 #include <SFML/Graphics.hpp>
 #include <cmath>
-
 using namespace sf;
 using namespace std;
 #define width 50
 #define height 10
+
+/**
+ * @file Zombie.h
+ * @brief Definicja klasy Zombie reprezentującej przeciwnika w grze.
+ */
+
+/**
+ * @class Zombie
+ * @brief Klasa reprezentująca przeciwnika w grze.
+ */
 class Zombie
 {
 public:
@@ -20,6 +29,12 @@ public:
     bool finished = false;
     sf::RectangleShape hpBarBack;
     sf::RectangleShape hpBarInside;
+
+    /**
+      * @brief Konstruktor klasy Zombie.
+      * Inicjalizuje zdrowie, maksymalne zdrowie, teksturę i kształt przeciwnika.
+      * @param texture Tekstura przeciwnika.
+      */
     Zombie(Texture &texture)
     {
         this -> hp = rand()%3+1;
@@ -28,6 +43,12 @@ public:
         shape.setTexture(&texture);
         initHp();
     }
+
+    /**
+     * @brief Funkcja spawnująca przeciwnika.
+     * Jeśli animacja przeciwnika nie została zakończona, uruchamia animację.
+     * @param window Referencja do obiektu sf::RenderWindow, na którym przeciwnik jest renderowany.
+     */
     void spawn(sf::RenderWindow &window) {
         if (animation.current_animation == 6) {
             finished = true;
@@ -38,6 +59,12 @@ public:
         hpBarBack.setPosition(shape.getPosition().x, shape.getPosition().y - 35);
         hpBarInside.setPosition(hpBarBack.getPosition());
     }
+
+    /**
+     * @brief Funkcja rysująca pasek zdrowia przeciwnika.
+     * Rysuje tło i wewnętrzną część paska zdrowia, jeśli animacja przeciwnika nie została zakończona.
+     * @param target Referencja do obiektu sf::RenderTarget, na którym pasek zdrowia jest renderowany.
+     */
     void renderHp(sf::RenderTarget& target)
     {
         if(!finished){
@@ -46,6 +73,10 @@ public:
         }
     }
 
+    /**
+     * @brief Inicjalizuje pasek zdrowia przeciwnika.
+     * Ustawia rozmiar i kolory tła oraz wewnętrznej części paska zdrowia.
+     */
     void initHp()
     {
         hpBarBack.setSize(sf::Vector2f(width,height));
@@ -56,12 +87,24 @@ public:
         hpBarInside.setFillColor(sf::Color(250,20,20,200));
         hpBarInside.setPosition(hpBarBack.getPosition());
     }
+
+    /**
+     * @brief Inicjalizuje pasek zdrowia przeciwnika.
+     * Ustawia rozmiar i kolory tła oraz wewnętrznej części paska zdrowia.
+     */
     void updateHp() { //TODO Postać na wstępie ma hp, ale trzeba gdzieś jej dodać (najlepiej przy zadawaniu obrażenia) aktualizację hp
         float percentage = static_cast<float>(hp) / static_cast<float>(maxHp);
         hpBarInside.setSize(sf::Vector2f(static_cast<float>(std::floor(width * percentage)), hpBarInside.getSize().y));
     }
-
 };
+
+/**
+ * @brief Funkcja dodająca przeciwnika do wektora przeciwników.
+ * Generuje losową liczbę, na podstawie której określa początkową pozycję przeciwnika.
+ * @param zombieVec Wektor przeciwników.
+ * @param zombie Przeciwnik do dodania.
+ * @param window Referencja do obiektu sf::RenderWindow, na którym przeciwnik jest renderowany.
+ */
 void add(vector<Zombie> &zombieVec, Zombie zombie, sf::RenderWindow& window)
 {
     int number = rand()%4+1;
