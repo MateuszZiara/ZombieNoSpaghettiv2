@@ -4,6 +4,13 @@
 
 #include "../Header/Arrow.h"
 
+/**
+ * @brief Przesuwa strzałę w zależności od jej kierunku.
+ *
+ * Metoda przesuwa pozycję strzały w zależności od ustawionego kierunku.
+ * Kierunki to: 0 - prawo, 1 - lewo, 2 - dół, 3 - góra.
+ */
+
 void Arrow::move() {
     if(direction == 0) {
         arrowShape.move(5, 0);

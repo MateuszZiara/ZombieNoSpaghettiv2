@@ -3,6 +3,16 @@
 using namespace sf;
 using namespace std;
 
+/**
+ * @brief Inicjalizuje przyciski dla standardowych ustawień.
+ *
+ * @param window Referencja do obiektu sf::RenderWindow.
+ * @param bitMap Referencja do obiektu BitMap.
+ * @param player Referencja do obiektu Player.
+ * @param archerTexture Tekstura dla łucznika.
+ * @param berserkTexture Tekstura dla berserka.
+ * @return Wektor obiektów Button zainicjalizowanych dla standardowych ustawień.
+ */
 std::vector<Button> init_buttons(sf::RenderWindow &window, BitMap &bitMap, Player &player, Texture &archerTexture, Texture &berserkTexture)
 {
     Button startGame(483,882,389,488, [&bitMap](){
@@ -41,6 +51,16 @@ std::vector<Button> init_buttons(sf::RenderWindow &window, BitMap &bitMap, Playe
     buttonVector.push_back(archerChoose);
     return buttonVector;
 }
+
+/**
+ * @brief Inicjalizuje przyciski dla stanu najechania kursorem myszy.
+ *
+ * @param window Referencja do obiektu sf::RenderWindow.
+ * @param bitMap Referencja do obiektu BitMap.
+ * @param berserkAnimation Referencja do obiektu Animation dla animacji berserka.
+ * @param lucznikAnimation Referencja do obiektu Animation dla animacji łucznika.
+ * @return Wektor obiektów Button zainicjalizowanych dla stanu najechania myszą.
+ */
 std::vector<Button> init_buttonsHovered(sf::RenderWindow &window, BitMap &bitMap, Animation &berserkAnimation, Animation &lucznikAnimation)
 {
     Button HalfLeftMenu(0,window.getSize().x/2,0,window.getSize().y,[&berserkAnimation, &window]()

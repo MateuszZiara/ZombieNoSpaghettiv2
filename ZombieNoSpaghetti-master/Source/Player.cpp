@@ -3,13 +3,33 @@
 #include "../Header/Animations.h"
 #include <iostream>
 
+/**
+     * @brief Ustawia klasę gracza na podstawie wyboru.
+     *
+     * @param choose True - łucznik, False - Berserker.
+     */
 void Player::setKlasa(bool choose) {
     klasa = choose;
 }
 
+/**
+     * @brief Zwraca model gracza.
+     *
+     * @return Prostokąt reprezentujący model gracza.
+     */
 sf::RectangleShape Player::getPlayerModel() {
     return playerModel;
 }
+
+/**
+   * @brief Przesuwa gracza na podstawie klawiszy wciśniętych przez użytkownika.
+   *
+   * @param window Referencja do obiektu sf::RenderWindow.
+   * @param Animation Referencja do obiektu Animation.
+   * @param hold Określa, czy klawisz jest wciśnięty.
+   * @param pointsVector Wektor wektorów punktów definiujących obszary na planszy.
+   * @param lastKey Ostatni wciśnięty klawisz.
+   */
 void Player::move(sf::RenderWindow &window, Animation &Animation, bool hold, std::vector<std::vector<::Vector2f>> pointsVector, int &lastKey) {
     int key = lastKey;
     int increment = 3;
@@ -128,6 +148,11 @@ void Player::move(sf::RenderWindow &window, Animation &Animation, bool hold, std
     window.draw(boundsRect);
 }
 
+/**
+    * @brief Inicjalizuje model gracza.
+    *
+    * @param texture Tekstura do użycia dla modelu gracza.
+    */
 void Player::initModel(sf::Texture &texture) {
         if(klasa)
              this -> texture.loadFromFile("../Textures/lucznik.png");
@@ -139,9 +164,27 @@ void Player::initModel(sf::Texture &texture) {
         playerModel.setTextureRect(sf::IntRect(0, 0, 66, 96));
 
 }
+
+/**
+     * @brief Zwraca wybraną klasę gracza.
+     *
+     * @return True - łucznik, False - Berserker.
+     */
 bool Player::getKlasa() {
     return klasa;
 }
+
+/**
+     * @brief Obsługuje atak gracza.
+     *
+     * @param animation Referencja do obiektu Animation.
+     * @param attackKey Określa, czy klawisz ataku jest wciśnięty.
+     * @param key Klawisz ataku.
+     * @param window Referencja do obiektu sf::RenderWindow.
+     * @param arrowVector Wektor strzał gracza.
+     * @param delaycount Licznik opóźnienia ataku.
+     * @param textureArrow Tekstura do użycia dla strzał.
+     */
 void Player::attack(Animation &shoot, bool &attackKey, int &key, sf::RenderWindow &window, vector<Arrow> &arrowVector, int &delaycount, Texture &textureArrow) {
     delaycount++;
 

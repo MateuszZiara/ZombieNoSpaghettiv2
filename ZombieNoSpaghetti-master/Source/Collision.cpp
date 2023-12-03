@@ -1,6 +1,14 @@
 #include <valarray>
-#include "../Header/Collision.h"
 #include <SFML/Graphics.hpp>
+#include <algorithm> // for std::sort
+#include "../Header/Collision.h"
+
+/**
+ * @brief Pobiera globalne granice wielokąta zdefiniowanego przez punkty.
+ *
+ * @param points Wektor punktów definiujących wielokąt.
+ * @return Obiekt sf::FloatRect reprezentujący globalne granice wielokąta.
+ */
 sf::FloatRect getGlobalBounds(const std::vector<sf::Vector2f>& points) {
     sf::ConvexShape tempField;
     tempField.setPointCount(points.size());
@@ -12,6 +20,14 @@ sf::FloatRect getGlobalBounds(const std::vector<sf::Vector2f>& points) {
     return tempField.getGlobalBounds();
 }
 
+/**
+ * @brief Tworzy wielokąt reprezentujący obszar na planszy.
+ *
+ * @param points Wektor punktów definiujących obszar na planszy.
+ * @param window Referencja do obiektu sf::RenderWindow.
+ * @param fillColor Kolor wypełnienia obszaru na planszy.
+ * @return Obiekt sf::ConvexShape reprezentujący obszar na planszy.
+ */
 sf::ConvexShape getField(const std::vector<sf::Vector2f>& points, sf::RenderWindow& window, const sf::Color& fillColor)
 {
     // Create a convex shape to represent the field
@@ -36,6 +52,14 @@ sf::ConvexShape getField(const std::vector<sf::Vector2f>& points, sf::RenderWind
     window.draw(field);
     return field;
 }
+
+/**
+ * @brief Rysuje granice prostokąta z określonym kolorem.
+ *
+ * @param rect Prostokąt, którego granice są rysowane.
+ * @param window Referencja do obiektu sf::RenderWindow.
+ * @param boundsColor Kolor granic prostokąta.
+ */
 void drawRectangleBounds(const sf::RectangleShape& rect, sf::RenderWindow& window, const sf::Color& boundsColor)
 {
     // Create a rectangle shape representing the global bounds
@@ -49,6 +73,13 @@ void drawRectangleBounds(const sf::RectangleShape& rect, sf::RenderWindow& windo
     window.draw(boundsRect);
 }
 
+/**
+ * @brief Sprawdza, czy punkt znajduje się wewnątrz wielokąta.
+ *
+ * @param point Punkt, którego przynależność do wielokąta jest sprawdzana.
+ * @param polygon Wielokąt, w którym sprawdzana jest przynależność punktu.
+ * @return Zwraca true, jeżeli punkt znajduje się wewnątrz wielokąta, w przeciwnym razie false.
+ */
 bool isPointInsidePolygon(const sf::Vector2f& point, const std::vector<sf::Vector2f>& polygon)
 {
     bool inside = false;
@@ -62,9 +93,16 @@ bool isPointInsidePolygon(const sf::Vector2f& point, const std::vector<sf::Vecto
 }
 
 
-#include <algorithm> // for std::sort
 
 
+/**
+ * @brief Sprawdza, czy prostokąt dotyka obszaru na planszy.
+ *
+ * @param rect Prostokąt, którego dotykanie jest sprawdzane.
+ * @param points Wektor punktów definiujących obszar na planszy.
+ * @param window Referencja do obiektu sf::RenderWindow.
+ * @return Zwraca wektor sf::Vector2f reprezentujący punkt dotykania prostokąta, lub sf::Vector2f(-100, -100), jeżeli nie ma kolizji.
+ */
 sf::Vector2f isRectangleTouchingField(sf::RectangleShape& rect, std::vector<sf::Vector2f> points, sf::RenderWindow& window)
 {
     // Sort the points in counterclockwise order
@@ -74,6 +112,11 @@ sf::Vector2f isRectangleTouchingField(sf::RectangleShape& rect, std::vector<sf::
 
     // Draw the filled field with red color
     sf::ConvexShape field = getField(points, window, sf::Color::Red);
+    field.setPointCount(points.size());
+    for (std::size_t i = 0; i < points.size(); ++i) {
+        field.setPoint(i, points[i]);
+    }
+    field.setFillColor(sf::Color::Red);
 
     // Draw the rectangle bounds with yellow color
     drawRectangleBounds(rect, window, sf::Color::Yellow);
@@ -87,7 +130,7 @@ sf::Vector2f isRectangleTouchingField(sf::RectangleShape& rect, std::vector<sf::
     }) {
         // Check if the point is inside the convex shape (use the sorted points)
         if (isPointInsidePolygon(rectPoint, points)) {
-            return sf::Vector2f(rectPoint.x, rectPoint.y);
+            return rectPoint;
         }
     }
     return sf::Vector2f(-100, -100);

@@ -1,4 +1,3 @@
-
 #include <SFML/Graphics.hpp>
 #include "WindowConfig.h"
 #include "Collision.h"
@@ -36,12 +35,11 @@ public:
     vector<Arrow> arrowVector;
     vector<Zombie> zombieVector;
     std::vector<sf::Vector2f> points = {
-            sf::Vector2f(0, 511),
-            sf::Vector2f(354, 452),
             sf::Vector2f(458, 0),
             sf::Vector2f(300, 100),
+            sf::Vector2f(354, 452),
             sf::Vector2f(500, 300),
-
+            sf::Vector2f(0, 511)
     };
     std::vector<sf::Vector2f> points2 = {
             sf::Vector2f(410, 465), //pień
@@ -123,17 +121,21 @@ public:
                 window.close();
         }
     }
-    void vectors_update()
-    {
-        for(int i = 0; i < arrowVector.size(); ++i)
-        {
+    void vectors_update() {
+        for (int i = 0; i < arrowVector.size(); ++i) {
             arrowVector[i].move();
-            if(collisionWithBorderRect(arrowVector[i].arrowShape,window)) {
+            if (collisionWithBorderRect(arrowVector[i].arrowShape, window)) {
                 arrowVector.erase(arrowVector.begin() + i);
                 break;
             }
             window.draw(arrowVector[i].arrowShape);
         }
+
+        for (Zombie& zombie : zombieVector) {
+            zombie.spawn(window);
+            zombie.renderHp(window);
+        }
+
         for (std::size_t i = 0; i < points.size(); ++i) {
             sf::Vertex line[] = {
                     sf::Vertex(points[i]),
@@ -141,11 +143,8 @@ public:
             };
             window.draw(line, 2, sf::Lines);
         }
-        for(int i = 0; i < zombieVector.size(); ++i)
-            zombieVector[i].spawn(window);
-
-
     }
+
     void view_update()
     {
         sf::Vector2f viewCenter(player.getPlayerModel().getPosition().x, player.getPlayerModel().getPosition().y);
@@ -194,11 +193,10 @@ public:
         if(zombieSpawn >= 200)
         {
             Zombie zombie(zombieTexture);
-            add(zombieVector,zombie);
+            add(zombieVector,zombie,window);
             zombieSpawn = 0;
             zombieCount++;
         }
-
         window.display();
         window.clear();
     }

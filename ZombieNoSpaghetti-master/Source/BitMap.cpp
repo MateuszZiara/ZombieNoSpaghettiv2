@@ -1,10 +1,31 @@
 #include "../Header/BitMap.h"
+
+/**
+ * @brief Ustawia numer aktualnego etapu gry.
+ *
+ * @param stage Numer etapu gry.
+ */
 void BitMap::setStage(int stage) {
     this->stage = stage;
 }
+
+/**
+ * @brief Pobiera numer aktualnego etapu gry.
+ *
+ * @return Numer etapu gry.
+ */
 int BitMap::getStage() {
     return stage;
 }
+
+/**
+ * @brief Konfiguruje bitmapę na podstawie aktualnego etapu gry.
+ *
+ * Metoda ta ustawia odpowiednią teksturę na podstawie numeru etapu gry.
+ *
+ * @param window Referencja do obiektu sf::RenderWindow.
+ * @param view Referencja do obiektu sf::View.
+ */
 void BitMap::configureBitMap(sf::RenderWindow &window, View &view){
 
     if(stage == 0)

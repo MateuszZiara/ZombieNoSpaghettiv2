@@ -1,9 +1,20 @@
-//
-// Created by coons on 03.11.2023.
-//
-
 #include "../Header/Animations.h"
-
+/**
+ * @brief Uruchamia określoną animację na RectangleShape.
+ *
+ * Funkcja ustawia teksturę na RectangleShape i przemieszcza prostokąt wzdłuż arkusza sprite'ów
+ * w celu wyświetlenia określonej animacji. Funkcja pozwala na ustawienie odstępu czasu pomiędzy wyświetleniem kolejnych klatek animacji.
+ *
+ * @param rectangleShape RectangleShape, do którego ma być zastosowana animacja.
+ * @param animationNumber Numer animacji do uruchomienia.
+ * @param x Współrzędna X sprite'a w teksturze.
+ * @param y Współrzędna Y sprite'a w teksturze.
+ * @param width Szerokość sprite'a w pikselach.
+ * @param height Wysokość sprite'a w pikselach.
+ * @param texture Referencja do tekstury zawierającej arkusz sprite'ów.
+ * @param delay Opóźnienie między klatkami animacji w milisekundach.
+ * @param window Referencja do SFML RenderWindow.
+ */
 void Animation::run_animation(sf::RectangleShape &rectangleShape, int animationNumber, int x, int y, int width,
                               int height, sf::Texture &texture, int delay, sf::RenderWindow &window) {
     rectangleShape.setTexture(&texture);
