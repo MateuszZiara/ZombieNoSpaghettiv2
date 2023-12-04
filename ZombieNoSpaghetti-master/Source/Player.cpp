@@ -188,15 +188,15 @@ bool Player::getKlasa() {
 void Player::attack(Animation &shoot, bool &attackKey, int &key, sf::RenderWindow &window, vector<Arrow> &arrowVector, int &delaycount, Texture &textureArrow) {
     delaycount++;
 
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+            key = 1;
+        else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+            key = 2;
+        else if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
+            key = 3;
+        else
+            key = 0;
 
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-        key = 1;
-    else if(sf::Keyboard::isKeyPressed(sf::Keyboard::S))
-        key = 2;
-    else if(sf::Keyboard::isKeyPressed(sf::Keyboard::W))
-        key = 3;
-    else
-        key = 0;
 
     if(shoot.current_animation == 5 && delaycount >= 6 && getKlasa())
     {
@@ -209,16 +209,28 @@ void Player::attack(Animation &shoot, bool &attackKey, int &key, sf::RenderWindo
         shoot.current_animation = 0;
     }
     if(key == 0) {
-        shoot.run_animation(playerModel, 9, 69, 288, 69, 96, texture, 5, window);
+        if(klasa)
+            shoot.run_animation(playerModel, 9, 69, 288, 69, 96, texture, 5, window);
+        else
+            shoot.run_animation(playerModel, 9, 69, 288, 69, 96, texture, 1, window);
     }
     else if(key == 1){
+        if(klasa)
         shoot.run_animation(playerModel,9,69,768,69,96,texture,5,window);
+        else
+            shoot.run_animation(playerModel,9,69,768,69,96,texture,1,window);
     }
     else  if(key == 3){
+        if(klasa)
         shoot.run_animation(playerModel,9,69,864,69,96,texture,5,window);
+        else
+            shoot.run_animation(playerModel,9,69,864,69,96,texture,1,window);
     }
     else{
+        if(klasa)
         shoot.run_animation(playerModel,9,69,576,69,96,texture,5,window);
+        else
+            shoot.run_animation(playerModel,9,69,576,69,96,texture,1,window);
     }
 
 

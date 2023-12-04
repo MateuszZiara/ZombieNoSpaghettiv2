@@ -56,4 +56,10 @@ void BitMap::configureBitMap(sf::RenderWindow &window, View &view){
         window.draw(sprite);
 
     }
+    else if(stage == 4)
+    {
+        sf::Sprite sprite;
+        sprite.setTexture(ded);
+        window.draw(sprite);
+    }
 }

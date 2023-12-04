@@ -22,6 +22,7 @@ class BitMap
     Texture menu; ///< Tekstura menu.
     Texture intrukcja; ///< Tekstura instrukcji.
     Texture wybor; ///< Tekstura ekranu wyboru.
+    Texture ded; ///< Tekstura ded wyboru.
 public:
     /**
      * @brief Ustawia numer aktualnego etapu gry.
@@ -57,6 +58,7 @@ public:
         menu.loadFromFile("../Textures/menu.png");
         intrukcja.loadFromFile("../Textures/instrukcja_gotowa.png");
         wybor.loadFromFile("../Textures/wybor.png");
+        ded.loadFromFile("../Textures/ded.png");
     }
 };
 #endif //ZOMBIENOSPAGHETTI_BITMAP_H

@@ -25,17 +25,21 @@ public:
     Player()
     {
         if(klasa)
-            MAXhp = 7;
+            MAXhp = 10;
         else
             MAXhp = 10;
         width = 50.f;
         hpBarMaxWidth = width;
         height = 10.f;
+        hp = MAXhp;
     }
     sf::RectangleShape hpBarBack;
     sf::RectangleShape hpBarInside;
     Texture texture;
     sf::RectangleShape playerModel;
+    int key;
+    bool attacking = false;
+    int punkty = 0;
 
     /**
      * @brief Ustawia klasę gracza na podstawie wyboru.
@@ -88,12 +92,13 @@ public:
      * @param textureArrow Tekstura do użycia dla strzał.
      */
     void attack(Animation &animation, bool &attackKey, int &key, sf::RenderWindow &window, vector<Arrow> &arrowVector, int &delaycount, Texture &textureArrow);
-private:
+public:
     bool klasa; ///< True - łucznik, False - Berserker
     float MAXhp; ///< Maksymalna ilość punktów życia gracza.
     float width; ///< Szerokość postaci
     float hpBarMaxWidth; ///< Maksymalna szerokość paska zdrowia
     float height; ///< Wysokość postaci
+    int hp;
 
 
 };

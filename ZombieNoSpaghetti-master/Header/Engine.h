@@ -80,6 +80,7 @@ public:
     Animation walk;
     Animation idle;
     Animation shoot;
+    Animation dead;
     Texture archerTexture;
     Texture berserkTexture;
     Texture arrowTexture;
@@ -134,6 +135,13 @@ public:
         for (Zombie& zombie : zombieVector) {
             zombie.spawn(window);
             zombie.renderHp(window);
+            zombie.attack(player.getPlayerModel(),window);
+            zombie.moveShapeTowardsPlayer(player.getPlayerModel(),window);
+            if(zombie.shape.getGlobalBounds().intersects(player.getPlayerModel().getGlobalBounds()) && !zombie.attacking)
+            {
+                player.hp = player.hp -1;
+
+            }
         }
 
         for (std::size_t i = 0; i < points.size(); ++i) {
@@ -142,6 +150,19 @@ public:
                     sf::Vertex(points[(i + 1) % points.size()])
             };
             window.draw(line, 2, sf::Lines);
+        }
+        for(int i = 0; i < arrowVector.size(); ++i)
+        {
+            for(int j = 0; j < zombieVector.size(); ++j)
+            {
+                if(arrowVector[i].arrowShape.getGlobalBounds().intersects(zombieVector[j].shape.getGlobalBounds()))
+                {
+                    zombieVector.erase(zombieVector.begin() + j);
+                    arrowVector.erase(arrowVector.begin() + i);
+                    player.punkty++;
+                    break;
+                }
+            }
         }
     }
 
@@ -155,25 +176,63 @@ public:
     }
     void keyboard_update()
     {
-        if(!wasShootKeyPressed)
-            player.move(window,walk,wasWalkKeysPressed,allPoints, lastkey);
-        if(!wasMouseButtonPressed && sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
-            check_if_button_pressed(buttonVector, window, bitMap.getStage());
-        }
-        wasMouseButtonPressed = sf::Mouse::isButtonPressed(sf::Mouse::Left);
-        if(sf::Keyboard::isKeyPressed(sf::Keyboard::A) || sf::Keyboard::isKeyPressed(sf::Keyboard::D) || sf::Keyboard::isKeyPressed(sf::Keyboard::W) || sf::Keyboard::isKeyPressed(sf::Keyboard::S))
-            wasWalkKeysPressed = true;
-        else
-            wasWalkKeysPressed = false;
-        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
-            wasShootKeyPressed = true;
+        if(player.hp > 0) {
+            if (!wasShootKeyPressed)
+                player.move(window, walk, wasWalkKeysPressed, allPoints, lastkey);
+            if (!wasMouseButtonPressed && sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+                check_if_button_pressed(buttonVector, window, bitMap.getStage());
+            }
+            wasMouseButtonPressed = sf::Mouse::isButtonPressed(sf::Mouse::Left);
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) || sf::Keyboard::isKeyPressed(sf::Keyboard::D) ||
+                sf::Keyboard::isKeyPressed(sf::Keyboard::W) || sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+                wasWalkKeysPressed = true;
+            else
+                wasWalkKeysPressed = false;
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+            {
+                wasShootKeyPressed = true;
+                if(!player.getKlasa())
+                {
+                    sf::FloatRect expandedBounds = player.getPlayerModel().getGlobalBounds();
+                    if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+                    {
+                        expandedBounds.left -= 80;
+                    }
 
-        if(!wasWalkKeysPressed && !wasShootKeyPressed)
-        {
-            idle.run_animation(player.playerModel,9,69,0,69,96,player.texture,5,window);
+                    // Check if D key is pressed and expand right
+                    if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+                    {
+                        expandedBounds.width += 80;
+                    }
+
+                    // Check if W key is pressed and expand up
+                    if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
+                    {
+                        expandedBounds.top -= 80;
+                    }
+
+                    // Check if S key is pressed and expand down
+                    if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+                    {
+                        expandedBounds.height += 80;
+                    }
+                    for(int i = 0; i < zombieVector.size(); ++i)
+                    {
+                        if (zombieVector[i].shape.getGlobalBounds().intersects(expandedBounds))
+                        {
+                            zombieVector.erase(zombieVector.begin() + i);
+                            player.punkty++;
+                        }
+                    }
+                }
+            }
+            if (!wasWalkKeysPressed && !wasShootKeyPressed) {
+                idle.run_animation(player.playerModel, 9, 69, 0, 69, 96, player.texture, 5, window);
+            }
+            if (wasShootKeyPressed)
+                player.attack(shoot, wasShootKeyPressed, key, window, arrowVector, delayCount, arrowTexture);
+
         }
-        if(wasShootKeyPressed)
-            player.attack(shoot, wasShootKeyPressed, key, window, arrowVector, delayCount, arrowTexture);
     }
     void buttons_upadte()
     {
@@ -181,24 +240,47 @@ public:
     }
     void run_engine()
     {
-        zombieSpawn++;
-        event_update();
-        view_update();
-        keyboard_update();
-        bitMap.configureBitMap(window,view);
-        buttons_upadte();
-        vectors_update();
-        window.draw(player.getPlayerModel());
-        isRectangleTouchingField(player.playerModel,points2,window);
-        if(zombieSpawn >= 200)
+            zombieSpawn++;
+            event_update();
+            view_update();
+            keyboard_update();
+            bitMap.configureBitMap(window, view);
+            buttons_upadte();
+            vectors_update();
+            window.draw(player.getPlayerModel());
+            isRectangleTouchingField(player.playerModel, points2, window);
+            if(bitMap.getStage() == 3) {
+                if (zombieSpawn >= 200) {
+                    if (zombieVector.size() < 6) {
+                        Zombie zombie(zombieTexture);
+                        add(zombieVector, zombie, window);
+                        zombieSpawn = 0;
+                    }
+
+                }
+            }
+
+        if(player.hp <= 0)
         {
-            Zombie zombie(zombieTexture);
-            add(zombieVector,zombie,window);
-            zombieSpawn = 0;
-            zombieCount++;
+            //Animation.run_animation(playerModel, 9, 69,96,69,96,texture,5,window);
+            if(dead.current_animation < 8)
+                if(player.klasa)
+                    dead.run_animation(player.playerModel,9,69,384,69,96,archerTexture,10,window);
+                else
+                    dead.run_animation(player.playerModel,9,69,384,69,96,berserkTexture,10,window);
+            if(dead.current_animation == 8)
+            {
+                zombieVector.clear();
+                arrowVector.clear();
+                window.setView(window.getDefaultView());
+                player.playerModel.setSize(Vector2f(0,0));
+                bitMap.setStage(4);
+            }
+
         }
+
         window.display();
-        window.clear();
+            window.clear();
     }
 };
 #endif //ZOMBIENOSPAGHETTI_ENGINE_H
