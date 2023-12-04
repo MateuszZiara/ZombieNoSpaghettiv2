@@ -8,20 +8,33 @@
 #include "Zombie.h"
 #ifndef ZOMBIENOSPAGHETTI_ENGINE_H
 #define ZOMBIENOSPAGHETTI_ENGINE_H
+
+/**
+ * @file Engine.h
+ * @brief Definicja klasy Engine, która zarządza główną logiką gry.
+ */
+
+/**
+ * @brief Główna klasa zarządzająca logiką gry.
+ */
 class Engine
 {
 public:
+    /**
+  * @brief Konstruktor klasy Engine.
+  * Inicjalizuje okno gry, ustawienia graficzne oraz obiekty gry.
+  */
     Engine() : window(sf::VideoMode(1366, 768), "Zombiaki no spagetti!") {
         init_graphic();
         init_variables();
         bitMap.setStage(0);
     }
     //Zmienne
-    sf::RenderWindow window;
+    sf::RenderWindow window; ///< Okno gry.
     Event event;
-    bool wasMouseButtonPressed;
-    bool wasWalkKeysPressed;
-    bool wasShootKeyPressed;
+    bool wasMouseButtonPressed; ///< Flaga wciśnięcia przycisku myszy
+    bool wasWalkKeysPressed; ///< Flaga wciśnięcia WSAD-u
+    bool wasShootKeyPressed; ///< Flaga wciśnięcia spacji
     Player player;
     BitMap bitMap;
     int key;
@@ -89,6 +102,11 @@ public:
     std::vector<Button> buttonVector = init_buttons(window, bitMap, player, archerTexture, berserkTexture);
     std::vector<Button> buttonVectorHovered = init_buttonsHovered(window, bitMap, BerserkMenu, LucznikMenu);
     //Funkcje
+
+    /**
+     * @brief Inicjalizuje zmienne klasy Engine.
+     * Ustawia początkowe wartości dla flag, liczników, i połówki rozmiarów okna.
+     */
     void init_variables()
     {
         wasMouseButtonPressed = false;
@@ -103,6 +121,10 @@ public:
         allPoints.push_back(points3);
         allPoints.push_back(points4);
     }
+
+    /**
+     * @brief Inicjalizuje elementy graficzne, takie jak tekstury i widok.
+     */
     void init_graphic()
     {
         WindowConfig::setDefault(window);
@@ -114,6 +136,10 @@ public:
         draw_buttons(buttonVector,window);
 
     }
+
+    /**
+    * @brief Obsługuje zdarzenia, takie jak zamknięcie okna.
+    */
     void event_update()
     {
         while (window.pollEvent(event))
@@ -122,6 +148,10 @@ public:
                 window.close();
         }
     }
+
+    /**
+     * @brief Aktualizuje wektory obiektów gry (np. ruch strzał, spawn zombie).
+     */
     void vectors_update() {
         for (int i = 0; i < arrowVector.size(); ++i) {
             arrowVector[i].move();
@@ -165,7 +195,9 @@ public:
             }
         }
     }
-
+/**
+     * @brief Aktualizuje widok gry w zależności od położenia gracza.
+     */
     void view_update()
     {
         sf::Vector2f viewCenter(player.getPlayerModel().getPosition().x, player.getPlayerModel().getPosition().y);
@@ -174,6 +206,10 @@ public:
         view.setCenter(viewCenter);
         view.setSize(window.getSize().x / 2, window.getSize().y / 2);
     }
+
+    /**
+     * @brief Aktualizuje sterowanie klawiaturą, obsługę przycisków myszy oraz animacje gracza.
+     */
     void keyboard_update()
     {
         if(player.hp > 0) {
@@ -234,10 +270,18 @@ public:
 
         }
     }
+
+    /**
+     * @brief Aktualizuje stan przycisków gry (najechane).
+     */
     void buttons_upadte()
     {
         check_if_button_hovered(buttonVectorHovered,window,bitMap.getStage());
     }
+
+    /**
+     * @brief Uruchamia silnik gry, rysuje obiekty, obsługuje zdarzenia, aktualizuje stany.
+     */
     void run_engine()
     {
             zombieSpawn++;
