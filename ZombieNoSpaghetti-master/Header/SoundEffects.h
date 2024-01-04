@@ -1,4 +1,4 @@
-/*
+
 #include <SFML/Audio.hpp>
 #include <map>
 class SoundEffects {
@@ -18,4 +18,3 @@ public:
 #define ZOMBIENOSPAGHETTI_MUSIC_H
 
 #endif //ZOMBIENOSPAGHETTI_MUSIC_H
-*/

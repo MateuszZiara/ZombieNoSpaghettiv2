@@ -86,8 +86,10 @@ public:
     Texture archerTexture;
     Texture berserkTexture;
     Texture arrowTexture;
-    //Implementacja dzwieku
-    //SoundEffects soundEffects;
+    /*
+     * Implementacja dzwieku
+    SoundEffects soundEffects;
+     */
     //Buttons
     std::vector<Button> buttonVector = init_buttons(window, bitMap, player, archerTexture, berserkTexture);
     std::vector<Button> buttonVectorHovered = init_buttonsHovered(window, bitMap, BerserkMenu, LucznikMenu);
