@@ -45,6 +45,7 @@ public:
     int lastkey = 0;
     int zombieSpawn = 0;
     int zombieCount = 0;
+    bool renderPonts = false;
     vector<Arrow> arrowVector;
     vector<Zombie> zombieVector;
     std::vector<sf::Vector2f> points = {
@@ -323,6 +324,7 @@ public:
                     dead.run_animation(player.playerModel,9,69,384,69,96,archerTexture,10,window);
                 else
                     dead.run_animation(player.playerModel,9,69,384,69,96,berserkTexture,10,window);
+
             if(dead.current_animation == 8)
             {
                 zombieVector.clear();
@@ -330,18 +332,20 @@ public:
                 window.setView(window.getDefaultView());
                 player.playerModel.setSize(Vector2f(0,0));
                 bitMap.setStage(4);
+                renderPonts = true;
+            }
+            if(renderPonts) {
                 sf::Text pointsText;
-                Font font;
-                font.loadFromFile("Arial.ttf");
+                sf::Font font;
+                font.loadFromFile("../Textures/Lato.ttf");
                 pointsText.setFont(font);
                 pointsText.setCharacterSize(24);
                 pointsText.setFillColor(sf::Color::White);
-                pointsText.setPosition(10, 10); // Adjust the position as needed
+                pointsText.setPosition(window.getSize().x / 2 - 30,
+                                       window.getSize().y / 2); // Adjust the position as needed
                 pointsText.setString("Points: " + std::to_string(player.punkty));
                 window.draw(pointsText);
-                //Render here player.punkty which is int
             }
-
         }
 
 
