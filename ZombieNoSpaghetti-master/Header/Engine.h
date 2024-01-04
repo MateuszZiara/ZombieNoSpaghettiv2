@@ -174,13 +174,7 @@ public:
             }
         }
 
-        for (std::size_t i = 0; i < points.size(); ++i) {
-            sf::Vertex line[] = {
-                    sf::Vertex(points[i]),
-                    sf::Vertex(points[(i + 1) % points.size()])
-            };
-            window.draw(line, 2, sf::Lines);
-        }
+
         for(int i = 0; i < arrowVector.size(); ++i)
         {
             for(int j = 0; j < zombieVector.size(); ++j)
@@ -220,8 +214,9 @@ public:
             }
             wasMouseButtonPressed = sf::Mouse::isButtonPressed(sf::Mouse::Left);
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) || sf::Keyboard::isKeyPressed(sf::Keyboard::D) ||
-                sf::Keyboard::isKeyPressed(sf::Keyboard::W) || sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+                sf::Keyboard::isKeyPressed(sf::Keyboard::W) || sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
                 wasWalkKeysPressed = true;
+            }
             else
                 wasWalkKeysPressed = false;
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
@@ -269,6 +264,20 @@ public:
                 player.attack(shoot, wasShootKeyPressed, key, window, arrowVector, delayCount, arrowTexture);
 
         }
+        if(player.getPlayerModel().getPosition().y > window.getSize().y - player.getPlayerModel().getSize().y)
+        {
+
+            player.playerModel.setPosition(sf::Vector2f(player.getPlayerModel().getPosition().x,window.getSize().y - player.playerModel.getSize().y));
+        }
+        if(player.getPlayerModel().getPosition().x < 0)
+        {
+
+            player.playerModel.setPosition(sf::Vector2f( 0,player.getPlayerModel().getPosition().y));
+        }
+        if(player.getPlayerModel().getPosition().y < 0)
+        {
+            player.playerModel.setPosition(sf::Vector2f(player.getPlayerModel().getPosition().x,0));
+        }
     }
 
     /**
@@ -282,6 +291,8 @@ public:
     /**
      * @brief Uruchamia silnik gry, rysuje obiekty, obsługuje zdarzenia, aktualizuje stany.
      */
+
+
     void run_engine()
     {
             zombieSpawn++;
@@ -292,7 +303,7 @@ public:
             buttons_upadte();
             vectors_update();
             window.draw(player.getPlayerModel());
-            isRectangleTouchingField(player.playerModel, points2, window);
+
             if(bitMap.getStage() == 3) {
                 if (zombieSpawn >= 200) {
                     if (zombieVector.size() < 6) {
@@ -319,9 +330,20 @@ public:
                 window.setView(window.getDefaultView());
                 player.playerModel.setSize(Vector2f(0,0));
                 bitMap.setStage(4);
+                sf::Text pointsText;
+                Font font;
+                font.loadFromFile("Arial.ttf");
+                pointsText.setFont(font);
+                pointsText.setCharacterSize(24);
+                pointsText.setFillColor(sf::Color::White);
+                pointsText.setPosition(10, 10); // Adjust the position as needed
+                pointsText.setString("Points: " + std::to_string(player.punkty));
+                window.draw(pointsText);
+                //Render here player.punkty which is int
             }
 
         }
+
 
         window.display();
             window.clear();
