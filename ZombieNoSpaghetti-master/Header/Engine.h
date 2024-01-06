@@ -265,6 +265,12 @@ public:
                 player.attack(shoot, wasShootKeyPressed, key, window, arrowVector, delayCount, arrowTexture);
 
         }
+        if(player.hp <= 0 && Keyboard::isKeyPressed(sf::Keyboard::Escape)){
+            renderPonts = false;
+            player.punkty = 0;
+            player.hp = 10;
+            bitMap.setStage(0);
+        }
         if(player.getPlayerModel().getPosition().y > window.getSize().y - player.getPlayerModel().getSize().y)
         {
 
@@ -279,21 +285,46 @@ public:
         {
             player.playerModel.setPosition(sf::Vector2f(player.getPlayerModel().getPosition().x,0));
         }
+
     }
 
     /**
      * @brief Aktualizuje stan przycisków gry (najechane).
      */
-    void buttons_upadte()
+    void buttons_update()
     {
         check_if_button_hovered(buttonVectorHovered,window,bitMap.getStage());
+    }
+
+
+    /**
+     * @brief Wyświetla aktualny stan ilośći punktów na ekranie
+     * @param window Aktualne okno gry
+     * @param player Obiekt klasy gracza
+     * @param view Widok okna gry na który nakładany jest napis
+     */
+    void drawPoints(sf::RenderWindow &window, Player &player, const sf::View &view)
+    {
+        sf::Font font;
+        if (!font.loadFromFile("../Textures/Lato.ttf"))
+        {
+            return;
+        }
+
+        sf::Text text;
+        text.setFont(font);
+        text.setString("Punkty: " + std::to_string(player.punkty));
+        text.setCharacterSize(20);
+        text.setFillColor(sf::Color::White);
+        sf::Vector2f fixedPosition(window.getSize().x - 200, 10);
+        sf::Vector2f viewPosition = window.mapPixelToCoords(static_cast<sf::Vector2i>(fixedPosition), view);
+        text.setPosition(viewPosition);
+        window.draw(text);
     }
 
     /**
      * @brief Uruchamia silnik gry, rysuje obiekty, obsługuje zdarzenia, aktualizuje stany.
      */
-
-
     void run_engine()
     {
             zombieSpawn++;
@@ -301,12 +332,13 @@ public:
             view_update();
             keyboard_update();
             bitMap.configureBitMap(window, view);
-            buttons_upadte();
+        buttons_update();
             vectors_update();
+        if(bitMap.getStage() == 3) {
             window.draw(player.getPlayerModel());
+            drawPoints(window,player,view);
 
-            if(bitMap.getStage() == 3) {
-                if (zombieSpawn >= 200) {
+            if (zombieSpawn >= 200) {
                     if (zombieVector.size() < 6) {
                         Zombie zombie(zombieTexture);
                         add(zombieVector, zombie, window);
@@ -339,11 +371,11 @@ public:
                 sf::Font font;
                 font.loadFromFile("../Textures/Lato.ttf");
                 pointsText.setFont(font);
-                pointsText.setCharacterSize(24);
+                pointsText.setCharacterSize(50);
                 pointsText.setFillColor(sf::Color::White);
-                pointsText.setPosition(window.getSize().x / 2 - 30,
-                                       window.getSize().y / 2); // Adjust the position as needed
-                pointsText.setString("Points: " + std::to_string(player.punkty));
+                pointsText.setPosition(window.getSize().x / 2 - 220,
+                                       window.getSize().y / 2);
+                pointsText.setString("Zdobyte punkty: " + std::to_string(player.punkty));
                 window.draw(pointsText);
             }
         }

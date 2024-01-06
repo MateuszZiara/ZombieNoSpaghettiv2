@@ -130,9 +130,11 @@ public:
 
             // Calculate the new position of the shape
             sf::Vector2f newPosition = shapePos + direction * speed;
-
             // Move the shape towards the player
             shape.setPosition(newPosition);
+
+            renderHp(window);
+            updateHp();
             movingAnimation.run_animation(shape,8,80,304,80,78,texture,10,window);
             // Draw the updated shape on the window
             window.draw(shape);

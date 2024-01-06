@@ -37,7 +37,7 @@ void Player::move(sf::RenderWindow &window, Animation &Animation, bool hold, std
     for(std::vector<sf::Vector2f> pointsinvec : pointsVector)
     {
         if(isRectangleTouchingField(playerModel,pointsinvec,window).x != -100 )
-       cout << key;
+       //cout << key; //wyswietlanie granicy na ktora weszła postac
         if(isRectangleTouchingField(playerModel,pointsinvec,window).x != -100 )
         {
             while(isRectangleTouchingField(playerModel,pointsinvec,window).x != -100) {
