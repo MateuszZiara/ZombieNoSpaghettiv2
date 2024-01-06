@@ -7,7 +7,7 @@
 #include "Player.h"
 #include "Arrow.h"
 #include "Zombie.h"
-//#include "SoundEffects.h"
+#include "SoundEffects.h"
 #ifndef ZOMBIENOSPAGHETTI_ENGINE_H
 #define ZOMBIENOSPAGHETTI_ENGINE_H
 class Engine
@@ -86,10 +86,9 @@ public:
     Texture archerTexture;
     Texture berserkTexture;
     Texture arrowTexture;
-    /*
-     * Implementacja dzwieku
+    //Implementacja dzwieku
     SoundEffects soundEffects;
-     */
+
     //Buttons
     std::vector<Button> buttonVector = init_buttons(window, bitMap, player, archerTexture, berserkTexture);
     std::vector<Button> buttonVectorHovered = init_buttonsHovered(window, bitMap, BerserkMenu, LucznikMenu);
@@ -124,8 +123,10 @@ public:
     {
         while (window.pollEvent(event))
         {
-            if (event.type == sf::Event::Closed)
+            if (event.type == sf::Event::Closed){
+                soundEffects.stopMusic();
                 window.close();
+            }
         }
     }
     void vectors_update()
@@ -183,6 +184,7 @@ public:
     }
     void run_engine()
     {
+        soundEffects.playMusic(1);
         zombieSpawn++;
         event_update();
         view_update();

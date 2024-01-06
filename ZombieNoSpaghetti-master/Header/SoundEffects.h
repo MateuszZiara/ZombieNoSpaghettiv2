@@ -1,8 +1,8 @@
-
 #include <SFML/Audio.hpp>
 #include <map>
+
 class SoundEffects {
-private:
+public:
     sf::Music music;
     std::map<int, std::string> soundsContainer;
 public:
