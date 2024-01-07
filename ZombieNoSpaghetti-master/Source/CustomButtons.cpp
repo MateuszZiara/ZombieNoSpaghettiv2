@@ -4,6 +4,11 @@ using namespace sf;
 using namespace std;
 
 /**
+ * @file CustomButtons.cpp
+ * @brief Implementacja klasy CustomButtons dla guzików w ekranie wyboru postaci.
+ */
+
+/**
  * @brief Inicjalizuje przyciski dla standardowych ustawień.
  *
  * @param window Referencja do obiektu sf::RenderWindow.

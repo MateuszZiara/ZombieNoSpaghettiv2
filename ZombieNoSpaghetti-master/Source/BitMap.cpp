@@ -1,4 +1,9 @@
 #include "../Header/BitMap.h"
+/**
+ * @file BitMap.cpp
+ * @brief Implementacja klasy BitMap.
+ */
+
 
 /**
  * @brief Ustawia numer aktualnego etapu gry.

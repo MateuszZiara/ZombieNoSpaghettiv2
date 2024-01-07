@@ -2,6 +2,10 @@
 #include <SFML/Graphics.hpp>
 #include <algorithm> // for std::sort
 #include "../Header/Collision.h"
+/**
+ * @file Collision.cpp
+ * @brief Implementacja klasy Collision.
+ */
 
 /**
  * @brief Pobiera globalne granice wielokąta zdefiniowanego przez punkty.

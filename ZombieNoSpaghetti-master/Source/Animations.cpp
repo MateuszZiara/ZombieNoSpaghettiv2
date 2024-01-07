@@ -1,5 +1,11 @@
 #include "../Header/Animations.h"
 /**
+ * @file Animations.cpp
+ * @brief Implementacja klasy Animations.
+ */
+
+
+/**
  * @brief Uruchamia określoną animację na RectangleShape.
  *
  * Funkcja ustawia teksturę na RectangleShape i przemieszcza prostokąt wzdłuż arkusza sprite'ów

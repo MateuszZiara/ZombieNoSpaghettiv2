@@ -1,6 +1,7 @@
-//
-// Created by coons on 14.11.2023.
-//
+/**
+ * @file Arrow.cpp
+ * @brief Implementacja klasy dla strzał.
+ */
 
 #include "../Header/Arrow.h"
 

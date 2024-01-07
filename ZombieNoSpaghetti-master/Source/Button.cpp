@@ -1,6 +1,10 @@
 #include <unistd.h>
 #include "../Header/Button.h"
 using namespace std;
+/**
+ * @file Button.cpp
+ * @brief Implementacja klasy Button.
+ */
 
     /**
      * @brief Funkcja zwraca granice przycisku.

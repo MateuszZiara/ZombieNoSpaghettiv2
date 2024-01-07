@@ -1,6 +1,8 @@
-//
-// Created by coons on 01.12.2023.
-//
+/**
+ * @file Zombie.h
+ *
+ * @brief Plik nagłówkowy klasy Zombie, reprezentującej postać zombie w grze.
+ */
 #include <SFML/Graphics.hpp>
 #include <cmath>
 
@@ -8,21 +10,32 @@ using namespace sf;
 using namespace std;
 #define width1 50
 #define height1 10
+
+/**
+ * @class Zombie
+ *
+ * @brief Reprezentuje postać zombie w grze.
+ */
 class Zombie
 {
 public:
+    int hp; /**< Aktualne punkty zdrowia zombie. */
+    int maxHp; /**< Maksymalna ilość punktów zdrowia zombie. */
+    Texture texture; /**< Tekstura używana do renderowania zombie. */
+    RectangleShape shape; /**< Kształt zombie. */
+    Animation animation; /**< Animacja ogólnego ruchu zombie. */
+    Animation attackAnimation; /**< Animacja ataku zombie. */
+    Animation movingAnimation; /**< Animacja ruchu zombie w kierunku gracza. */
+    bool finished = false; /**< Flaga wskazująca, czy animacja zombie została zakończona. */
+    bool attacking = false; /**< Flaga wskazująca, czy zombie aktualnie wykonuje atak. */
+    sf::RectangleShape hpBarBack; /**< Kształt tła paska zdrowia. */
+    sf::RectangleShape hpBarInside; /**< Kształt przedstawiający aktualne zdrowie. */
 
-    int hp;
-    int maxHp;
-    Texture texture;
-    RectangleShape shape;
-    Animation animation;
-    Animation attackAnimation;
-    Animation movingAnimation;
-    bool finished = false;
-    bool attacking = false;
-    sf::RectangleShape hpBarBack;
-    sf::RectangleShape hpBarInside;
+    /**
+     * @brief Konstruktor klasy Zombie.
+     *
+     * @param texture Referencja do tekstury używanej do renderowania zombie.
+     */
     Zombie(Texture &texture)
     {
         this -> hp = rand()%3+1;
@@ -31,6 +44,12 @@ public:
         shape.setTexture(&texture);
         initHp();
     }
+
+    /**
+     * @brief Tworzy zombie w oknie gry.
+     *
+     * @param window Referencja do okna gry.
+     */
     void spawn(sf::RenderWindow &window) {
         if (animation.current_animation == 6) {
             finished = true;
@@ -41,6 +60,12 @@ public:
         hpBarBack.setPosition(shape.getPosition().x, shape.getPosition().y - 35);
         hpBarInside.setPosition(hpBarBack.getPosition());
     }
+
+    /**
+     * @brief Renderuje pasek zdrowia zombie.
+     *
+     * @param target Cel renderowania.
+     */
     void renderHp(sf::RenderTarget& target)
     {
         if(!finished){
@@ -49,6 +74,9 @@ public:
         }
     }
 
+    /**
+     * @brief Inicjalizuje właściwości paska zdrowia.
+     */
     void initHp()
     {
         hpBarBack.setSize(sf::Vector2f(width1,height1));
@@ -59,10 +87,19 @@ public:
         hpBarInside.setFillColor(sf::Color(250,20,20,200));
         hpBarInside.setPosition(hpBarBack.getPosition());
     }
-    void updateHp() { //TODO Postać na wstępie ma hp, ale trzeba gdzieś jej dodać (najlepiej przy zadawaniu obrażenia) aktualizację hp
+
+    /**
+     * @brief Aktualizuje pasek zdrowia na podstawie aktualnych punktów zdrowia.
+     *
+     */
+    void updateHp() {
         float percentage = static_cast<float>(hp) / static_cast<float>(maxHp);
         hpBarInside.setSize(sf::Vector2f(static_cast<float>(std::floor(width1 * percentage)), hpBarInside.getSize().y));
     }
+
+    /**
+     * @brief Aktualizuje pasek zdrowia na podstawie aktualnych punktów zdrowia.
+     */
     void attack(RectangleShape player, sf::RenderWindow &window)
     {
         if((player.getGlobalBounds().intersects(shape.getGlobalBounds()) && finished) || attacking)
@@ -110,6 +147,13 @@ public:
             }
         }
     }
+
+    /**
+     * @brief Przesuwa zombie w kierunku gracza.
+     *
+     * @param player RectangleShape reprezentujący gracza.
+     * @param window Referencja do okna gry.
+     */
     void moveShapeTowardsPlayer(sf::RectangleShape player, sf::RenderWindow& window) {
         if(finished && !attacking) {
             // Get the position of the shape and player
@@ -142,6 +186,14 @@ public:
     }
 
 };
+
+/**
+ * @brief Dodaje zombie do wektora zombie z losową pozycją.
+ *
+ * @param zombieVec Wektor zombie.
+ * @param zombie Obiekt zombie do dodania.
+ * @param window Referencja do okna gry.
+ */
 void add(vector<Zombie> &zombieVec, Zombie zombie, sf::RenderWindow& window)
 {
     int number = rand()%4+1;

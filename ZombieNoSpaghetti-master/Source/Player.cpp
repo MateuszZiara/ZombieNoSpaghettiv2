@@ -2,6 +2,11 @@
 #include "../Header/Collision.h"
 #include "../Header/Animations.h"
 #include <iostream>
+/**
+ * @file Player.cpp
+ * @brief Implementacja klasy Player.
+ */
+
 
 /**
      * @brief Ustawia klasę gracza na podstawie wyboru.
